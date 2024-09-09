@@ -1,21 +1,20 @@
-# 使用官方 Python 镜像
-FROM python:3.9-slim
+# 使用官方的 Python 基础镜像
+FROM python:3.10-slim
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制 requirements.txt 并安装依赖项
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
-# 复制项目文件
+# 复制当前目录的内容到工作目录
 COPY . .
 
-# 暴露应用程序端口
+# 安装依赖
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 暴露应用端口
 EXPOSE 5000
 
-# 设置环境变量（可选）
-ENV PORT=5000
+# 设置环境变量以指示 Flask 在生产模式下运行
+ENV FLASK_ENV=production
 
-# 启动应用程序
+# 启动 Flask 应用
 CMD ["python", "app.py"]
